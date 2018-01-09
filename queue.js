@@ -25,4 +25,12 @@ class Queue {
 	}
 }
 
+const two = new Queue();
+two.add('one');
+two.add('two');
+two.add('three');
+two.add('four');
+two.add('five');
+console.log(two);
+console.log(two.remove());
 module.exports=Queue;

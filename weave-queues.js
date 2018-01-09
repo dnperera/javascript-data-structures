@@ -22,8 +22,8 @@
 //    q.remove() // 2
 //    q.remove() // 'There'
 //
-const Queue=require('./queue');
 
+const Queue=require('./queue');
 
 function weave(sourceOne, sourceTwo) {
 	const mergedQueue= new Queue();
