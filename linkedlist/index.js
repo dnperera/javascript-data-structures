@@ -51,6 +51,43 @@ class LinkedList{
 
 		this.head =this.head.next;
 	}
+
+	removeLast(){
+		//if the list is empty
+		if(!this.head){
+			return;
+		}
+		//if the list has only one item
+		if(!this.head.next){
+			this.head=null;
+			return;
+		}
+
+		let previousNode = this.head;
+		let node=this.head.next;
+		while(node.next){
+			previousNode=node;
+			node=node.next;
+		}
+
+		previousNode.next=null;
+		return; 
+	}
+
+	insertLast(data){
+		if(!this.head){
+			this.head= new Node(data);
+		}
+
+		let node = this.head;
+		while(node){
+			if(!node.next){
+				node.next = new Node(data);
+				return;
+			}
+			node=node.next;
+		}
+	}
 }
 
 
@@ -64,15 +101,4 @@ class LinkedList{
 // console.log(list.size());
 module.exports={Node,LinkedList}
 
-function getElementsThatEqual10AtProperty(obj, key){
-	return obj[key].filter((number)=>{
-		return (number ===10)
-	})
-}
-
-var obj = {
-  key: [1000, 10, 50, 10]
-};
-var output = getElementsThatEqual10AtProperty(obj, 'key');
-console.log('88)', output); // --> [10, 10]
 

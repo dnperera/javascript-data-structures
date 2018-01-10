@@ -134,3 +134,15 @@ describe('RemoveFirst', () => {
     });
   });
 });
+
+describe('InsertLast', () => {
+  test('adds to the end of the list', () => {
+    const l = new List();
+    l.insertFirst('a');
+
+    l.insertLast('b');
+
+    expect(l.size()).toEqual(2);
+    expect(l.getLast().data).toEqual('b');
+  });
+});
