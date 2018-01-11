@@ -75,30 +75,77 @@ class LinkedList{
 	}
 
 	insertLast(data){
-		if(!this.head){
+
+		const last = this.getLast();
+		if(last){
+			//there are some existing nodes in the list
+			last.next= new Node(data);
+		}else{
+			//List is empty
 			this.head= new Node(data);
 		}
+	}
 
-		let node = this.head;
+	getAt(index){
+		let counter=0;
+		let node= this.head;
+
 		while(node){
-			if(!node.next){
-				node.next = new Node(data);
-				return;
+			if(counter===index){
+				return node;
 			}
+			counter++;
 			node=node.next;
 		}
+		return null;
+	}
+
+	removeAt(index){
+		if(!this.head){
+			return;
+		}
+		if(index===0){
+			this.head = this.head.next;
+		}
+
+		let previousNode = this.getAt(index-1);
+		if(!previousNode||!previousNode.next){
+			return;
+		}
+		previousNode.next=previousNode.next.next;
+	}
+
+	insertAt(data,index){
+		if(!this.head){
+			this.head = new Node(data);
+			return;
+		}
+
+		if(index ===0){
+			this.head = new Node(data,this.head);
+			return;
+		}
+
+		let previousNode= this.getAt(index-1)||this.getLast();
+		let node = new Node(data,previousNode.next)
+		previousNode.next=node;
 	}
 }
 
 
-// const node1 = new Node('a');
-// //const node2 = new Node('b');
-// const node3 = new Node('c');
-// const list = new LinkedList();
-// list.head=node1;
-// list.insertFirst('b')
-// list.insertFirst('c')
-// console.log(list.size());
+
+// const l = new LinkedList();
+// console.log(l.getAt(10));
+
+// l.insertLast(1);
+// l.insertLast(2);
+// l.insertLast(3);
+// l.insertLast(4);
+// // console.log(l.getAt(0).data)
+// // console.log(l.getAt(1).data)
+// // console.log(l.getAt(2).data)
+// // console.log(l.getAt(3).data)
+// console.log(l);
 module.exports={Node,LinkedList}
 
 
