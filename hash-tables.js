@@ -1,106 +1,76 @@
-/*
-	Hash Table Implementatio
- */
-
-//Create Hash Function which will create index value for key
-
-let hash =(key,maxLength)=>{
-	var totalUnicodeValue=0;
-	for(let i=0; key.length>i;i++){
-		totalUnicodeValue +=key.charCodeAt(i);
-	}
-	return totalUnicodeValue%maxLength;
+function HashTable(size){
+	this.buckets =Array(size);
+	this.numBuckets = this.buckets.length;	
 }
 
-let HashTable =function(){
-	let storage=[];
-	const storageLimit =5;
-
-	this.print=()=>{
-		return storage;
-	}
-
-	this.add=(key,value)=>{
-		let index = hash(key,storageLimit);
-		if(storage[index]=== undefined){
-			storage[index]=[[key,value]];
-		}else{
-			let inserted=false;
-			for(let i=0;storage[index].length>i;i++){
-				if(storage[index][i][0]===key){
-					storage[index][i][1] = value;
-					inserted=true;
-				}
-			}
-
-			if(!inserted){ // there is no matching key in storage[index]
-				storage[index].push([key,value])
-			}
-		}
-	};
-	this.remove=(key)=>{
-		let index = hash(key,storageLimit);
-		if(!storage[index]){
-			console.log(`There is no item with ${key}!`);
-			return false;
-		}
-
-		if(storage[index].length===1&&storage[index][0][0]===key){
-			delete storage[index];
-			console.log(`Item with ${key} deleted!`);
-			return true;
-		}else{
-			for(let i=0;storage[index].length>i;i++){
-
-				if(!storage[index][i][0]){
-					console.log(`There is no item with ${key}!`);
-					return false;
-				}
-
-				if(storage[index][i][0]===key){
-					storage[index].splice(i);
-					console.log(`Item with ${key} deleted!`);
-					return true;
-				}
-			}
-			console.log(`There is no item with ${key}!`);
-			return false;
-		}
-	};
-
-	this.search=(key)=>{
-		let index = hash(key,storageLimit);
-		if(storage[index]===undefined){
-			return undefined;
-		}else{
-			for(let i=0;storage[index].length>i;i++){
-				if(storage[index][i][0]===key){
-					 return storage[index][i][1];
-				}
-			}
-		}
-	}
-	
-	this.empty=function(){
-		storage=[];
-	 }
+function HashNode(key,value,next){
+	this.key = key;
+	this.value = value;
+	this.next = next || null;
 }
 
-var newTable = new HashTable();
-newTable.add('Dasith Perera','50 Miller Ranch Ct')
-newTable.add('John','San Francisco Camp')
-newTable.add('Lisa','San Francisco Camp')
-newTable.add('Denith Perera','Marinwood Camp')
-newTable.add('Hasini Perera','San Rafael Camp')
-newTable.add('Some Perera','Millvalley Camp')
-newTable.add('Peter Perera','San Francisco Camp')
-newTable.add('Nath De Silva','San Jose Camp')
-newTable.add('Denith Perera','Santa Clara Camp')
+HashTable.prototype.getHash= function(key){
+	var total=0;
+	for(var i=0;key.length >i; i++){
+			total += key.charCodeAt(i);
+	}
+	return total % this.numBuckets;
+};
 
-console.log(newTable.empty());
-newTable.add('Channa Don','Gilroy')
+HashTable.prototype.insert = function(key,value){
+	var index = this.getHash(key);
+	if(!this.buckets[index]) {
+		this.buckets[index] = new HashNode(key,value);
+	}else if(this.buckets[index].key === key) {
+		this.buckets[index].value = value;
+	}else{
+		var currentNode = this.buckets[index];
+		while( currentNode.next ){
 
-newTable.print().forEach((element)=>{
-	console.log(element);
-})
+			if( currentNode.next.key === key){ // check key already exist
+				currentNode.next.value = value;
+				return;
+			}
+			currentNode = currentNode.next;
+		}
+		currentNode.next =  new HashNode(key,value);
+	}
+};
+
+HashTable.prototype.get = function (key) { // get the value for given key;
+	var index = this.getHash(key);
+	if(!this.buckets[index]) {
+		return null;
+	} else {
+		var currentNode = this.buckets[index];
+		while( currentNode ) {
+			if(currentNode.key === key ){
+				return currentNode.value;
+			}
+			currentNode = currentNode.next;
+		}
+		return null;
+	}
+}
+
+HashTable.prototype.retrieveAll = function (){
+	var valueArray =[];
+	this.buckets.forEach( function(bucket) {
+		while(bucket){
+			valueArray.push(bucket);
+			bucket = bucket.next;
+		}
+	});
+	return valueArray;
+};
+
+var myHT = new HashTable(30);
+
+myHT.insert('Dayan','415-717-9272');
+myHT.insert('Hasini','415-717-5449');
+myHT.insert('Dasith','415-472-3765');
+myHT.insert('Denith','415-472-7890');
+myHT.insert('Hasini','415-808-7777');
+console.log(myHT.retrieveAll());
+
 
