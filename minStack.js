@@ -71,20 +71,23 @@ var MinStack = function(capacity) {
 };
 
 MinStack.prototype.push = function(val) {
-	this.storage[this.counter++] = val;
+	if (this.counter < this.capacity) {
+		this.storage[this.counter++] = val;
 
-	if (this.minValues.size() === 0) {
-		this.minValues.push(val);
-	} else {
-		//Push new value if it is greater than current last value in the minValues stack
-		if (this.minValues.peek() > val) {
+		if (this.minValues.size() === 0) {
 			this.minValues.push(val);
 		} else {
-			this.minValues.push(this.minValues.peek());
+			//Push new value if it is greater than current last value in the minValues stack
+			if (this.minValues.peek() > val) {
+				this.minValues.push(val);
+			} else {
+				this.minValues.push(this.minValues.peek());
+			}
 		}
-	}
 
-	return this.counter;
+		return this.counter;
+	}
+	return 'Max capacity already reached. Remove element before adding a new one !';
 };
 
 MinStack.prototype.pop = function() {
