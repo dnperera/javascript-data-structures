@@ -11,7 +11,7 @@
 
 function recursiveMultiplier(array, num) {
 	if (array.length === 0) {
-		return array;
+		return;
 	}
 	var lastValue = array.pop();
 	recursiveMultiplier(array, num);
